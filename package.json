@@ -1,10 +1,13 @@
 {
     "private": true,
     "name": "node_rbac",
-    "workspaces": ["client", "server"],
+    "workspaces": ["packages/*"],
     "scripts": {
         "client": "yarn workspace client start",
         "server": "yarn workspace server start",
         "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\""
+    },
+    "devDependencies": {
+        "concurrently": "^5.1.0"
     }
- }
+}
