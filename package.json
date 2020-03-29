@@ -3,9 +3,11 @@
     "name": "node_rbac",
     "workspaces": ["packages/*"],
     "scripts": {
-        "client": "yarn workspace client start",
-        "server": "yarn workspace server start",
-        "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\""
+        "clientStart": "yarn workspace client start",
+        "serverStart": "yarn workspace server start",
+        "start": "concurrently --kill-others-on-fail \"yarn serverStart\"  \"yarn clientStart\"",
+        "server": "yarn workspace server",
+        "client": "yarn workspace client"
     },
     "devDependencies": {
         "concurrently": "^5.1.0"
