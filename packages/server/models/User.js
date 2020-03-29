@@ -1,24 +1,58 @@
-const sequelize = require('sequelize');
-const Model = sequelize.Model;
-const db = require('./connection');
+const { DataTypes } = require('sequelize');
+const sequelize = require('./connection');
 
-class User extends Model {
-
-}
-
-User.init({
+const User = sequelize.define('User',{
     firstName: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false
     },
     lastName: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
     },
-    userName: {
-        type: sequelize.STRING,
+    userId: {
+        type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        validate: {
+            is: {
+                args: [/^[\w\d]+$/i],
+                msg: "UserId should be start with alphanumeric"
+            },
+            notNull: {
+                args: [true],
+                msg: "UseId is a required field."
+            }
+        }
     }
-}, {sequelize});
+});
 
-module.exports = User;
+module.exports = {
+    getUserById: async (id) => {
+        let user = await User.findOne({where: {
+            userId: id
+        }});
+        if(!user) {
+            throw new Error(`User "${id}" does not exist.`);
+        }
+        return user;
+    },
+    createUser: async (user) => {
+        try {
+            let newUser = await User.create({
+                firstName: user.firstName,
+                lastName: user.lastName,
+                userId: user.userId
+            })
+            if(!newUser) {
+                return new Error('Unable to create user');
+            }
+            return newUser;
+        } 
+        catch (error) {
+            if(error.name === 'SequelizeUniqueConstraintError') {
+                throw new Error(`User "${user.userId}" already exists.`)
+            }
+            throw error.errors ? new Error(error.errors[0].message) : error;
+        }
+    }
+};

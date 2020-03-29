@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+const { Sequelize } = require('sequelize');
 // Setting up connection 
 module.exports = new Sequelize('AppDB', 'root', 'helloworld', {
   host: 'localhost',

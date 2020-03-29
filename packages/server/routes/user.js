@@ -1,20 +1,30 @@
 const router = require('express').Router();
-const User = require('../models/User');
- 
-async function getUserById(id) {
+const user = require('../models/User');
+
+router.get('/:userId', async (req, res) => {
     try {
-        let user = await User.findByPk(id);
-        if(!user) {
-            return new Error('User not found.');
-        }
+        let userData = await user.getUserById(req.query.userId);
+        console.log('MyUser',userData);
+        res.status(200).send(userData);
+    } catch (error) {
+        console.log(error)
+        res.status(404).send(error.message);
+    }
+})
+
+router.post('/', async (req, res) => {
+    try {
+        let response = await user.createUser(req.body)
+        console.log(response)
+        res.status(200).send(response);
     }
     catch(err) {
-        console.log(err);
+        if(err.message) {
+            res.status(500).send(err.message);
+        } else {
+            res.status(500).send(err);
+        }
     }
-}
-
-router.get('/', async (req, res) => {
-    res.status(200).send();
 })
 
 module.exports = router;
