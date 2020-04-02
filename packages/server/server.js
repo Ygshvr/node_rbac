@@ -14,7 +14,7 @@ app.use('/',router);
 db.authenticate()
   .then(() => {
       console.log('Connection has been established successfully.');
-      return db.sync({force:true});
+      return db.sync();
   })
   .then(() => {
     app.listen(port, () => console.log(`Example app listening on port ${port}!`))
