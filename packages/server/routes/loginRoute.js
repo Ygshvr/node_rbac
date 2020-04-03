@@ -7,6 +7,7 @@ router.post('/login', async (req, res) => {
     try {
         let response = await user.loginUser(req.body.email, req.body.password)
         jwt.sign({
+            id: response.id,
             name: response.name,
             email: response.email,
             role: response.role

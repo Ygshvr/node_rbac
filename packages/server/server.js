@@ -2,12 +2,16 @@ const express = require('express');
 const router = require('./routes');
 const bodyParser = require('body-parser');
 const db = require('./models/connection');
+const swaggerUi = require('swagger-ui-express');
+const openApiDocumentation = require('./swagger-config');
 const app = express()
 const port = 4000
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(bodyParser.json())
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocumentation));
 
 app.use('/',router);
 

@@ -60,7 +60,7 @@ module.exports = {
       where: { id }
     });
     if (!user) {
-      throw new Error(`User with "${id}" does not exist.`);
+      throw new Error(`User with id "${id}" does not exist.`);
     }
     return user;
   },
