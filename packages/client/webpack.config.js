@@ -20,6 +20,7 @@ module.exports = {
   devtool: "cheap-module-eval-source-map",
   devServer: {
     contentBase: path.join(__dirname, "dist"), // this does not generate bundle file instead serve it from memory.
-    historyApiFallback: true
+    historyApiFallback: true,
+    port: 5000
   }
 };

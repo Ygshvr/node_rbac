@@ -1,6 +1,6 @@
 import React from "react";
 
-class Table extends React.Component {
+class Home extends React.Component {
     constructor(props) {
        super(props)
        this.state = {
@@ -48,3 +48,5 @@ class Table extends React.Component {
        )
     }
  }
+
+ export default Home
