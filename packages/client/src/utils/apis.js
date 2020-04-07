@@ -12,16 +12,52 @@ export default {
             throw new Error('Email and password are required!');
         if(!validateEmail(email))
             throw new Error('Invalid email address!');
-        let response = await axios.post(`http://${domain}/api/auth/login`, { headers: { 'Content-Type': 'application/json' }});
-        sessionStorage.setItem('token', response.token)
+        let data = {
+            email,
+            password
+        }
+        let response
+        try {
+            response = await axios.post(`http://${domain}/api/auth/login`,data , { headers: { 'Content-Type': 'application/json' }});
+        }
+        catch(error) {
+          console.log(error);
+          if(error.response)
+            throw new Error(error.response.data.message);
+          else
+            throw new Error('Oops something went wrong, please try after sometime.');
+        }
+        sessionStorage.setItem('token', response.data.token)
         return true;
     },
     getAllUsers: async() => {
         let token = sessionStorage.getItem('token')
-        return await axios.get(`http://${domain}/api/user/getAll`, { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } });
+        let response
+        try {
+            response = await axios.get(`http://${domain}/api/user/getAll`, { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } });
+        }
+        catch(error) {
+            console.log(error);
+            if(error.response)
+                throw new Error(error.response.data.message);
+            else
+                throw new Error('Oops something went wrong, please try after sometime.');
+        }
+        return response.data
     },
     getById: async(id) => {
         let token = sessionStorage.getItem('token')
-        return await axios.get(`http://${domain}/api/user/${id}`, { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } });
+        let response
+        try {
+            response = await axios.get(`http://${domain}/api/user/${id}`, { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } });
+        }
+        catch(error) {
+            console.log(error);
+            if(error.response)
+                throw new Error(error.response.data.message);
+            else
+                throw new Error('Oops something went wrong, please try after sometime.');
+        }
+        return response.data
     }
 }

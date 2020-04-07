@@ -6,8 +6,8 @@ class Login extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      password: "",
+      email: "Fred@123.com",
+      password: "68651",
       error: "",
     };
     this.handleChange = this.handleChange.bind(this);
@@ -20,17 +20,18 @@ class Login extends React.PureComponent {
       [name]: value,
     });
   }
-  async handleSubmit(e) {
+  handleSubmit(e) {
     e.preventDefault();
-    try {
-      response = await apis.login(this.state.email, this.state.password);
+    apis.login(this.state.email, this.state.password)
+    .then((response) => {
       if(response) {
-        return <Redirect to='/Home' />
+        this.setState({loggedIn: true})
       }
-    } catch (error) {
-      console.log(error.response.data);
-      this.setState({error: error.response.data})
-    }
+    })
+    .catch((error) =>{
+      console.log(error);
+      this.setState({error: error.message})
+    })
   }
   render() {
     return (<div>
@@ -41,13 +42,12 @@ class Login extends React.PureComponent {
         ) : (
           ""
         )}
+        {this.state.loggedIn ? <Redirect to='/home'/> :''}
         <table>
           <tbody>
           <tr>
             <td>
-              <lable>
                 Email<sup>*</sup>{" "}
-              </lable>
             </td>
             <td>
               <input
@@ -60,9 +60,7 @@ class Login extends React.PureComponent {
           </tr>
           <tr>
             <td>
-              <lable>
                 Password<sup>*</sup>{" "}
-              </lable>
             </td>
             <td>
               <input

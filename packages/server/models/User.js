@@ -66,7 +66,7 @@ module.exports = {
   },
   getAllUsers: async () => {
     let allUsers = await User.findAll({
-      attributes: ["id", "name", "email", "password", "role"],
+      attributes: ["id", "name", "email", "role"],
       raw: true
     });
     allUsers = allUsers.sort((a, b) => {
@@ -80,7 +80,7 @@ module.exports = {
   },
   loginUser: async (email, password) => {
     let user = await User.findOne({
-        attributes: ["id", "name", "email", "password", "role"],
+        attributes: ["id", "name", "email", "role"],
         raw: true,
         where: { email, password }
       });

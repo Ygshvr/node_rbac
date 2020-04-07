@@ -6,6 +6,7 @@ const { secretKey } = require('../secrets');
 router.post('/login', async (req, res) => {
     try {
         let response = await user.loginUser(req.body.email, req.body.password)
+        console.log('Signing request for '+ req.body.email)
         jwt.sign({
             id: response.id,
             name: response.name,
@@ -13,6 +14,7 @@ router.post('/login', async (req, res) => {
             role: response.role
         }
         , secretKey
+        , { expiresIn: 60 * 60 * 24 }
         , (err, token) => {
             res.json({
                 "token": token
